@@ -1,0 +1,36 @@
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+html {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #999;
+}
+
+body {
+    font-size: 1.25rem;
+    max-width: 64em;
+    width: 100vw;
+    background-color: #1117;
+    padding: 1em;
+}
+
+body * {
+    color: #fff;
+}
+
+.files {
+    margin-inline: .5em;
+}
+
+a:hover {
+    text-decoration-thickness: 3px;
+}
+
+.disabled {
+    color: #999;
+}
