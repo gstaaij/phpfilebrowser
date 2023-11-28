@@ -1,7 +1,7 @@
 
 *, *::before, *::after {
     box-sizing: border-box;
-    font-family: monospace;
+    font-family: "Noto Sans Mono";
 }
 
 html {
@@ -12,7 +12,7 @@ html {
 }
 
 body {
-    font-size: 1.25rem;
+    font-size: 1rem;
     max-width: 64em;
     width: 100vw;
     background-color: #1117;

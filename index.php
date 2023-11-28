@@ -71,6 +71,7 @@ end:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index of <?php echo $_SERVER["REQUEST_URI"]; ?></title>
 
+    <link rel="stylesheet" href="<?php echo $BASE_URL . (str_ends_with($BASE_URL, "/") ? "" : "/") . "fonts/fonts.css"; ?>">
     <link rel="stylesheet" href="<?php echo $BASE_URL . (str_ends_with($BASE_URL, "/") ? "" : "/") . "style.css"; ?>">
 </head>
 <body>
