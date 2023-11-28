@@ -8,7 +8,7 @@ html {
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    background-color: #999;
+    background-image: radial-gradient(circle, #222 0%, #111 100%);;
 }
 
 body {
