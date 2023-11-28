@@ -21,29 +21,38 @@
 // SOFTWARE.
 
 
-// Change this if you put this anywhere else
+// These are things you can change to your liking
 $BASE_URL = "/";
 $FILE_LOCATION = "download/";
 $EXCLUSIONS = [".", "..", "index.php"];
 
+
+// This variable is used to show the error message with CSS applied to it
 $error = false;
 
+// If REQUEST_URI doesn't start with the $BASE_URL, give an error. This should never happen if set up correctly.
 if (!str_starts_with($_SERVER["REQUEST_URI"], $BASE_URL)) {
+    // Set the response code
     http_response_code(404);
+    // Set the error to insert into the HTML later
     $error = "<h1>404 Not Found</h1><hr><p>Invalid download folder. <a href=\"$BASE_URL\">Go back</a>.</p>";
+    // Skip the PHP code and go to the `end` label
     goto end;
 }
 
+// Take off the $BASE_URL from the REQUEST_URI
 $strippedUrl = substr($_SERVER["REQUEST_URI"], strlen($BASE_URL));
 
 $files = scandir($FILE_LOCATION . $strippedUrl);
 
+// If scandir failed, 404
 if (!$files) {
     http_response_code(404);
     $error = "<h1>404 Not Found</h1><hr><p>The file you are looking for does not exist. <a href=\"$BASE_URL\">Go back</a>.</p>";
     goto end;
 }
 
+// Remove the $EXCLUSIONS from the $files array
 for ($i = count($files) - 1; $i >= 0; $i--) {
     $file = $files[$i];
     if (in_array($file, $EXCLUSIONS)) {
@@ -67,6 +76,7 @@ end:
 <body>
     <?php
         if ($error) {
+            // Insert the $error into the HTML and stop outputting or executing anything
             echo $error;
             echo "\n</body>\n</html>";
             exit;
@@ -81,14 +91,20 @@ end:
             <p class="file disabled">Parent Directory</p>
         <?php }
         
+        // Go through all files and 
         foreach ($files as $file) {
+            // Do some mostly redundant logic to prevent any potential extra slashes
             $shouldSlash0 = ((str_ends_with($FILE_LOCATION, "/") || str_starts_with($strippedUrl, "/")) ? "" : "/");
             $shouldSlash1 = (($strippedUrl == "" || str_ends_with($strippedUrl, "/") || str_starts_with($file, "/")) ? "" : "/");
+            // The path to the file
             $filePath = $FILE_LOCATION . $shouldSlash0 . $strippedUrl . $shouldSlash1 . $file;
+            // The link to the file, if it's a file
             $fileLink = "/" . $filePath;
+            // The download attribute, to allow for immediate downloading on click
             $downloadAttr = "download=\"" . $file . "\"";
             if (is_dir($filePath)) {
                 $shouldSlash0 = ((str_ends_with($BASE_URL, "/") || str_starts_with($strippedUrl, "/")) ? "" : "/");
+                // If the file is actually a directory, remove the download attribute and change the link
                 $fileLink = $BASE_URL . $shouldSlash0 . $strippedUrl . $shouldSlash1 . $file;
                 $downloadAttr = "";
             } ?>
