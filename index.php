@@ -61,17 +61,20 @@ for ($i = count($files) - 1; $i >= 0; $i--) {
             <p><a href="<?php echo $_SERVER["REQUEST_URI"] . (str_ends_with($_SERVER["REQUEST_URI"], "/") ? "" : "/") . ".."; ?>">Parent Directory</a></p>
         <?php } else { ?>
             <p class="disabled">Parent Directory</p>
-        <?php } ?>
-        <?php foreach ($files as $file) {
+        <?php }
+        
+        foreach ($files as $file) {
             $shouldSlash0 = ((str_ends_with($FILE_LOCATION, "/") || str_starts_with($strippedUrl, "/")) ? "" : "/");
             $shouldSlash1 = (($strippedUrl == "" || str_ends_with($strippedUrl, "/") || str_starts_with($file, "/")) ? "" : "/");
             $filePath = $FILE_LOCATION . $shouldSlash0 . $strippedUrl . $shouldSlash1 . $file;
             $fileLink = "/" . $filePath;
+            $downloadAttr = "download=\"" . $file . "\"";
             if (is_dir($filePath)) {
                 $shouldSlash0 = ((str_ends_with($BASE_URL, "/") || str_starts_with($strippedUrl, "/")) ? "" : "/");
                 $fileLink = $BASE_URL . $shouldSlash0 . $strippedUrl . $shouldSlash1 . $file;
+                $downloadAttr = "";
             } ?>
-            <p><a href="<?php echo $fileLink; ?>"><?php echo $file; ?></a></p>
+            <p><a href="<?php echo $fileLink; ?>" <?php echo $downloadAttr; ?>><?php echo $file; ?></a></p>
         <?php } ?>
     </div>
 </body>
