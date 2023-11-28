@@ -18,11 +18,18 @@ body {
     background-color: #1117;
     padding: 1em;
     margin: 1em;
+    border-radius: .75em;
     cursor: default;
 }
 
 body, body * {
     color: #fff;
+}
+
+hr {
+    --lineWidth: .25em;
+    border: calc(var(--lineWidth) / 2) solid currentColor;
+    border-radius: 1em;
 }
 
 .files {
