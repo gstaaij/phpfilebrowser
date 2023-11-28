@@ -17,6 +17,7 @@ body {
     width: 100vw;
     background-color: #1117;
     padding: 1em;
+    cursor: default;
 }
 
 body * {
@@ -33,4 +34,5 @@ a:hover {
 
 .disabled {
     color: #999;
+    cursor: not-allowed;
 }
