@@ -26,21 +26,32 @@ $BASE_URL = "/";
 $FILE_LOCATION = "download/";
 $EXCLUSIONS = [".", "..", "index.php"];
 
+$error = false;
+
 if (!str_starts_with($_SERVER["REQUEST_URI"], $BASE_URL)) {
     http_response_code(404);
-    echo("Invalid download folder. <a href=\"$BASE_URL\">Go back</a>");
-    exit;
+    $error = "<h1>404 Not Found</h1><hr><p>Invalid download folder. <a href=\"$BASE_URL\">Go back</a>.</p>";
+    goto end;
 }
 
 $strippedUrl = substr($_SERVER["REQUEST_URI"], strlen($BASE_URL));
 
 $files = scandir($FILE_LOCATION . $strippedUrl);
+
+if (!$files) {
+    http_response_code(404);
+    $error = "<h1>404 Not Found</h1><hr><p>The file you are looking for does not exist. <a href=\"$BASE_URL\">Go back</a>.</p>";
+    goto end;
+}
+
 for ($i = count($files) - 1; $i >= 0; $i--) {
     $file = $files[$i];
     if (in_array($file, $EXCLUSIONS)) {
         array_splice($files, $i, 1);
     }
 }
+
+end:
 
 ?>
 
@@ -54,13 +65,20 @@ for ($i = count($files) - 1; $i >= 0; $i--) {
     <link rel="stylesheet" href="<?php echo $BASE_URL . (str_ends_with($BASE_URL, "/") ? "" : "/") . "style.css"; ?>">
 </head>
 <body>
+    <?php
+        if ($error) {
+            echo $error;
+            echo "\n</body>\n</html>";
+            exit;
+        }
+    ?>
     <h1>Index of <?php echo $_SERVER["REQUEST_URI"]; ?></h1>
     <hr>
     <div class="files">
         <?php if ($strippedUrl != "") { ?>
-            <p><a href="<?php echo $_SERVER["REQUEST_URI"] . (str_ends_with($_SERVER["REQUEST_URI"], "/") ? "" : "/") . ".."; ?>">Parent Directory</a></p>
+            <p class="file"><a href="<?php echo $_SERVER["REQUEST_URI"] . (str_ends_with($_SERVER["REQUEST_URI"], "/") ? "" : "/") . ".."; ?>">Parent Directory</a></p>
         <?php } else { ?>
-            <p class="disabled">Parent Directory</p>
+            <p class="file disabled">Parent Directory</p>
         <?php }
         
         foreach ($files as $file) {
@@ -74,7 +92,7 @@ for ($i = count($files) - 1; $i >= 0; $i--) {
                 $fileLink = $BASE_URL . $shouldSlash0 . $strippedUrl . $shouldSlash1 . $file;
                 $downloadAttr = "";
             } ?>
-            <p><a href="<?php echo $fileLink; ?>" <?php echo $downloadAttr; ?>><?php echo $file; ?></a></p>
+            <p class="file"><a href="<?php echo $fileLink; ?>" <?php echo $downloadAttr; ?>><?php echo $file; ?></a></p>
         <?php } ?>
     </div>
 </body>

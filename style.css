@@ -17,15 +17,20 @@ body {
     width: 100vw;
     background-color: #1117;
     padding: 1em;
+    margin: 1em;
     cursor: default;
 }
 
-body * {
+body, body * {
     color: #fff;
 }
 
 .files {
     margin-inline: .5em;
+}
+
+.file {
+    user-select: none;
 }
 
 a:hover {
@@ -34,5 +39,4 @@ a:hover {
 
 .disabled {
     color: #999;
-    cursor: not-allowed;
 }
