@@ -22,9 +22,12 @@
 
 
 // These are things you can change to your liking
-$BASE_URL = "/";
-$FILE_LOCATION = "download/";
-$EXCLUSIONS = [".", "..", "index.php"];
+// $BASE_URL and $FILE_LOCATION both shouldn't end with a slash
+// $BASE_URL should start with a slash
+$BASE_URL = "";
+// $FILE_LOCATION shouldn't start with a slash, and is the path relative to the position of this index.php file
+$FILE_LOCATION = "download";
+$EXCLUSIONS = [".", ".."];
 
 
 // This variable is used to show the error message with CSS applied to it
@@ -86,7 +89,7 @@ end:
     <h1>Index of <?php echo $_SERVER["REQUEST_URI"]; ?></h1>
     <hr>
     <div class="files">
-        <?php if ($strippedUrl != "") { ?>
+        <?php if ($strippedUrl != "" && $strippedUrl != "/") { ?>
             <p class="file"><a href="<?php echo $_SERVER["REQUEST_URI"] . (str_ends_with($_SERVER["REQUEST_URI"], "/") ? "" : "/") . ".."; ?>">Parent Directory</a></p>
         <?php } else { ?>
             <p class="file disabled">Parent Directory</p>
@@ -99,8 +102,10 @@ end:
             $shouldSlash1 = (($strippedUrl == "" || str_ends_with($strippedUrl, "/") || str_starts_with($file, "/")) ? "" : "/");
             // The path to the file
             $filePath = $FILE_LOCATION . $shouldSlash0 . $strippedUrl . $shouldSlash1 . $file;
+            // More logic to prevent extra slashes
+            $shouldSlash0 = ((str_ends_with($BASE_URL, "/") || str_starts_with($filePath, "/")) ? "" : "/");
             // The link to the file, if it's a file
-            $fileLink = "/" . $filePath;
+            $fileLink = $BASE_URL . $shouldSlash0 . $filePath;
             // The download attribute, to allow for immediate downloading on click
             $downloadAttr = "download=\"" . $file . "\"";
             if (is_dir($filePath)) {
