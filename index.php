@@ -33,7 +33,7 @@ $EXCLUSIONS = [".", ".."];
 // This variable is used to show the error message with CSS applied to it
 $error = false;
 
-// If REQUEST_URI doesn't start with the $BASE_URL, give an error. This should never happen if set up correctly.
+// If REQUEST_URI doesn't start with the $BASE_URL, respond with an error. This should never happen if set up correctly.
 if (!str_starts_with($_SERVER["REQUEST_URI"], $BASE_URL)) {
     // Set the response code
     http_response_code(404);
@@ -51,7 +51,7 @@ $files = scandir($FILE_LOCATION . $strippedUrl);
 // If scandir failed, 404
 if (!$files) {
     http_response_code(404);
-    $error = "<h1>404 Not Found</h1><hr><p>The file you are looking for does not exist. <a href=\"$BASE_URL\">Go back</a>.</p>";
+    $error = "<h1>404 Not Found</h1><hr><p>The file or folder you are looking for does not exist here. <a href=\"$BASE_URL\">Go back</a>.</p>";
     goto end;
 }
 
