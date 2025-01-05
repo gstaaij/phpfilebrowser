@@ -37,8 +37,9 @@ $error = false;
 if (!str_starts_with($_SERVER["REQUEST_URI"], $BASE_URL)) {
     // Set the response code
     http_response_code(404);
+    $url = $BASE_URL != "" ? $BASE_URL : "/";
     // Set the error to insert into the HTML later
-    $error = "<h1>404 Not Found</h1><hr><p>Invalid download folder. <a href=\"$BASE_URL\">Go back</a>.</p>";
+    $error = "<h1>404 Not Found</h1><hr><p>Invalid download folder. <a href=\"$url\">Go back</a>.</p>";
     // Skip the PHP code and go to the `end` label
     goto end;
 }
@@ -51,7 +52,8 @@ $files = scandir($FILE_LOCATION . $strippedUrl);
 // If scandir failed, 404
 if (!$files) {
     http_response_code(404);
-    $error = "<h1>404 Not Found</h1><hr><p>The file or folder you are looking for does not exist here. <a href=\"$BASE_URL\">Go back</a>.</p>";
+    $url = $BASE_URL != "" ? $BASE_URL : "/";
+    $error = "<h1>404 Not Found</h1><hr><p>The file or folder you are looking for does not exist here. <a href=\"$url\">Go back</a>.</p>";
     goto end;
 }
 
